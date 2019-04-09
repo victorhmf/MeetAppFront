@@ -3,18 +3,26 @@ import React, { Component } from 'react';
 
 import {
   Container, LogoContainer, Logo, Label, Input, Button, ButtonText,
-} from './styles';
+} from '../Signin/styles';
 
-export default class Signin extends Component {
+export default class Signup extends Component {
   state = {};
 
   render() {
     const { navigate } = this.props.navigation;
+
     return (
       <Container>
         <LogoContainer>
           <Logo source={require('~/images/logo.png')} />
         </LogoContainer>
+        <Label>Nome</Label>
+        <Input
+          autoCorrect={false}
+          autoCapitalize="none"
+          placeholder="Digite seu nome"
+          underlineColorAndroid="transparent"
+        />
         <Label>Email</Label>
         <Input
           autoCorrect={false}
@@ -32,11 +40,11 @@ export default class Signin extends Component {
         />
         <Button primary onPress={() => {}}>
           <ButtonText white bold>
-            Entrar
+            Criar Conta
           </ButtonText>
         </Button>
-        <Button onPress={() => navigate('Signup')}>
-          <ButtonText>Criar conta grátis</ButtonText>
+        <Button onPress={() => navigate('Signin')}>
+          <ButtonText>Já tenho conta</ButtonText>
         </Button>
       </Container>
     );

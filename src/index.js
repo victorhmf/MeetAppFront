@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import store from './store';
+import FlashMessage from 'react-native-flash-message';
 
 import Routes from '~/routes';
 
@@ -14,6 +15,7 @@ const App = () => (
     <ThemeProvider theme={theme}>
       <Routes />
     </ThemeProvider>
+    <FlashMessage position="top" />
   </Provider>
 );
 

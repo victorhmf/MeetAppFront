@@ -1,6 +1,8 @@
 /* eslint-disable react-native/no-raw-text */
 import React, { Component } from 'react';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {
   Container, LogoContainer, Logo, Label, Input, Button, ButtonText,
 } from './styles';

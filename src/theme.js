@@ -10,6 +10,7 @@ export const theme = {
     darker: '#333',
     black: '#000',
     transparent: 'transparent',
+    danger: '#ea5050',
   },
   fontSize: {
     small: '16px',

@@ -29,6 +29,7 @@ export const Input = styled.TextInput.attrs({
   font-size: ${props => props.theme.fontSize.medium};
   color: ${props => props.theme.colors.white};
   margin-bottom: 15px;
+  padding-left: 0;
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -42,4 +43,9 @@ export const ButtonText = styled.Text`
   font-size: ${props => props.theme.fontSize.small};
   color: ${props => (props.white ? props.theme.colors.white : props.theme.colors.regular)};
   font-weight: ${props => (props.bold ? 'bold' : 'normal')};
+`;
+
+export const Error = styled.Text`
+  font-size: ${props => props.theme.fontSize.small};
+  color: ${props => props.theme.colors.danger};
 `;

@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 
 import { ActivityIndicator } from 'react-native';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { UserActions } from '~/store/ducks/user';
+
 import {
   Container,
   LogoContainer,
@@ -14,54 +18,42 @@ import {
   Error,
 } from '../Signin/styles';
 
-import { showMessage } from 'react-native-flash-message';
 import PropTypes from 'prop-types';
 
 import api from '~/services/api';
 
-export default class Signup extends Component {
+class Signup extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
     }).isRequired,
+    createUserRequest: PropTypes.func.isRequired,
+    errors: PropTypes.arrayOf(
+      PropTypes.shape({
+        message: PropTypes.string,
+        field: PropTypes.string,
+        validation: PropTypes.string,
+      }),
+    ).isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   state = {
     username: '',
     email: '',
     password: '',
-    loading: false,
-    errors: [],
   };
 
   handleSubmit = async () => {
     const { username, email, password } = this.state;
-    const { navigate } = this.props.navigation;
+    const { createUserRequest } = this.props;
 
-    try {
-      this.setState({ loading: true });
-
-      await api.post('/users', { username, email, password });
-
-      showMessage({
-        message: 'Usuário criado com sucesso!',
-        type: 'success',
-        duration: 3000,
-      });
-
-      this.setState({ loading: false });
-      navigate('Signin');
-    } catch (error) {
-      const { data } = error.response;
-      this.setState({ errors: data, loading: false });
-    }
+    createUserRequest({ username, email, password });
   };
 
   render() {
-    const { navigate } = this.props.navigation;
-    const {
-      username, email, password, errors, loading,
-    } = this.state;
+    const { navigation, errors, loading } = this.props;
+    const { username, email, password } = this.state;
 
     return (
       <Container>
@@ -115,10 +107,22 @@ export default class Signup extends Component {
             </ButtonText>
           )}
         </Button>
-        <Button onPress={() => navigate('Signin')}>
+        <Button onPress={() => navigation.navigate('Signin')}>
           <ButtonText>Já tenho conta</ButtonText>
         </Button>
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state.user.loading,
+  errors: state.user.errors,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(UserActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Signup);

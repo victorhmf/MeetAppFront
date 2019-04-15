@@ -20,8 +20,6 @@ import {
 
 import PropTypes from 'prop-types';
 
-import api from '~/services/api';
-
 class Signup extends Component {
   static propTypes = {
     navigation: PropTypes.shape({

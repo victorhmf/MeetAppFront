@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import '~/config/ReactotronConfig';
 
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from 'styled-components';
 import FlashMessage from 'react-native-flash-message';
 import AsyncStorage from '@react-native-community/async-storage';
 import { theme } from './theme';
-import store from './store';
+import { store, persistor } from './store';
 import { setNavigator } from './services/navigation';
 
 import createNavigator from '~/routes';
@@ -20,6 +21,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     const token = await AsyncStorage.getItem('@Meetapp_token');
+    // await AsyncStorage.clear();
 
     this.setState({ userChecked: true, userLogged: !!token });
   }
@@ -32,10 +34,12 @@ export default class App extends Component {
 
     return (
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <Routes ref={setNavigator} />
-        </ThemeProvider>
-        <FlashMessage position="top" />
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <Routes ref={setNavigator} />
+          </ThemeProvider>
+          <FlashMessage position="top" />
+        </PersistGate>
       </Provider>
     );
   }

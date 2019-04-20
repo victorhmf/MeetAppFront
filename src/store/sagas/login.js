@@ -12,6 +12,8 @@ export function* login(user) {
 
     yield AsyncStorage.setItem('@Meetapp_token', data.token);
     yield put(LoginActions.loginSuccess(data.user));
+
+    navigate('Preferences');
   } catch (error) {
     if (error.response.status === 401) {
       error.response.data = [

@@ -27,9 +27,17 @@ const TabNavigator = createBottomTabNavigator(
   },
 );
 
-const AppNavigator = createStackNavigator({
-  TabNavigator, Preferences, Profile, Meetup,
-});
+const AppNavigator = createStackNavigator(
+  {
+    Preferences,
+    TabNavigator,
+    Profile,
+    Meetup,
+  },
+  {
+    initialRouteName: 'TabNavigator',
+  },
+);
 
 const Routes = (userLogged = false) => createAppContainer(
   createSwitchNavigator(

@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '~/services/api';
@@ -13,7 +13,7 @@ export function* login(user) {
     yield AsyncStorage.setItem('@Meetapp_token', data.token);
     yield put(LoginActions.loginSuccess(data.user));
 
-    navigate('Preferences');
+    data.user.firstLogin ? navigate('Preferences') : navigate('TabNavigator');
   } catch (error) {
     if (error.response.status === 401) {
       error.response.data = [

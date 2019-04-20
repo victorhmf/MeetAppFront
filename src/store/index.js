@@ -34,6 +34,7 @@ const transformerConfig = {
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['user'],
   stateReconciler: seamlessImmutableReconciler,
   transforms: [seamlessImmutableTransformCreator(transformerConfig)],
 };

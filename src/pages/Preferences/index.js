@@ -70,7 +70,7 @@ class Preferences extends Component {
       .filter(preference => preference.checked)
       .map(preference => preference.id);
 
-    updateUserRequest({ preferences });
+    updateUserRequest({ preferences, firstLogin: false });
   };
 
   render() {

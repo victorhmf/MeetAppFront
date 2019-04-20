@@ -1,12 +1,18 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-raw-text */
 import React, { Component } from 'react';
 import { CheckBox } from 'react-native-elements';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { UserActions } from '~/store/ducks/user';
+import api from '~/services/api';
 
 import {
   Container, Title, Paragraph, Button, ButtonText, SubTitle,
 } from './styles';
 
-export default class Preferences extends Component {
+class Preferences extends Component {
   static navigationOptions = { header: null };
 
   state = {
@@ -56,12 +62,24 @@ export default class Preferences extends Component {
     this.setState({ checkboxes: changedCheckBoxes });
   };
 
+  handleSubmit = async () => {
+    const { checkboxes } = this.state;
+    const { user, updateUserRequest } = this.props;
+
+    const preferences = checkboxes
+      .filter(preference => preference.checked)
+      .map(preference => preference.id);
+
+    updateUserRequest({ preferences });
+  };
+
   render() {
     const { checkboxes } = this.state;
+    const { user } = this.props;
 
     return (
       <Container>
-        <Title>Olá Diego</Title>
+        <Title>Olá {user.username}</Title>
         <Paragraph>
           Parece que é seu primeiro acesso por aqui, comece escolhendo algumas preferências para
           selecionarmos os melhores meetups pra você:
@@ -86,10 +104,21 @@ export default class Preferences extends Component {
             onPress={() => this.toggleCheckBox(checkbox.id)}
           />
         ))}
-        <Button>
+        <Button onPress={this.handleSubmit}>
           <ButtonText>Continuar</ButtonText>
         </Button>
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.login.user,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(UserActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Preferences);

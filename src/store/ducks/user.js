@@ -6,11 +6,11 @@ import Immutable from 'seamless-immutable';
 */
 
 const { Types, Creators } = createActions({
-  createUserRequest: ['user'],
-  createUserSuccess: ['data'],
+  createUserRequest: ['data'],
+  createUserSuccess: ['user'],
   createUserFailure: ['errors'],
-  updateUserRequest: ['user'],
-  updateUserSuccess: ['data'],
+  updateUserRequest: ['data'],
+  updateUserSuccess: ['user'],
   updateUserFailure: ['errors'],
 });
 
@@ -22,7 +22,7 @@ export const UserActions = Creators;
 */
 
 const INITIAL_STATE = Immutable({
-  data: [],
+  user: [],
   loading: false,
   errors: [],
 });
@@ -32,7 +32,7 @@ const INITIAL_STATE = Immutable({
 */
 
 const userRequest = state => state.merge({ loading: true });
-const userSuccess = (state, { data }) => state.merge({ loading: false, data });
+const userSuccess = (state, { user }) => state.merge({ loading: false, user });
 const userFailure = (state, { errors }) => state.merge({ loading: false, errors });
 
 export const user = createReducer(INITIAL_STATE, {

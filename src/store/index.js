@@ -2,7 +2,10 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { seamlessImmutableReconciler } from 'redux-persist-seamless-immutable';
+import {
+  seamlessImmutableReconciler,
+  seamlessImmutableTransformCreator,
+} from 'redux-persist-seamless-immutable';
 
 import reducers from './ducks';
 import sagas from './sagas';
@@ -22,11 +25,17 @@ const composer = __DEV__
   )
   : compose(applyMiddleware(...middlewares));
 
+const transformerConfig = {
+  whitelistPerReducer: {
+    login: ['user'],
+  },
+};
+
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['login'],
   stateReconciler: seamlessImmutableReconciler,
+  transforms: [seamlessImmutableTransformCreator(transformerConfig)],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

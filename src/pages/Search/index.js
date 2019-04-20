@@ -2,16 +2,22 @@ import React, { Component } from 'react';
 
 import { View, Text } from 'react-native';
 
-// import { Container } from './styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { Container } from './styles';
 
 export default class Search extends Component {
+  static navigationOptions = {
+    tabBarIcon: ({ tintColor }) => <Icon name="search" size={24} color={tintColor} />,
+  };
+
   state = {};
 
   render() {
     return (
-      <View>
+      <Container>
         <Text>Search</Text>
-      </View>
+      </Container>
     );
   }
 }

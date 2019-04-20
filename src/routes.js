@@ -13,6 +13,7 @@ import Meetup from '~/pages/Meetup';
 import NewMeetup from '~/pages/NewMeetup';
 import Profile from '~/pages/Profile';
 import Search from '~/pages/Search';
+import { theme } from '~/theme';
 
 const AuthNavigator = createSwitchNavigator({ Signin, Signup });
 
@@ -24,6 +25,15 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     initialRouteName: 'DashBoard',
+    tabBarOptions: {
+      showIcon: true,
+      showLabel: false,
+      activeTintColor: theme.colors.white,
+      inactiveTintColor: theme.colors.white,
+      style: {
+        backgroundColor: theme.colors.primary,
+      },
+    },
   },
 );
 

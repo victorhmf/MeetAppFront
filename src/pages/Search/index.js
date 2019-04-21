@@ -8,7 +8,7 @@ import { Container } from './styles';
 
 export default class Search extends Component {
   static navigationOptions = {
-    tabBarIcon: ({ tintColor }) => <Icon name="search" size={24} color={tintColor} />,
+    tabBarIcon: ({ tintColor }) => <Icon name="search" size={20} color={tintColor} />,
   };
 
   state = {};

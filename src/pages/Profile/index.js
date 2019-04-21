@@ -5,6 +5,10 @@ import { View, Text } from 'react-native';
 // import { Container } from './styles';
 
 export default class Profile extends Component {
+  static navigationOptions = {
+    title: 'Perfil',
+  };
+
   state = {};
 
   render() {

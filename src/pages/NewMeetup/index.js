@@ -8,7 +8,7 @@ import { Container } from './styles';
 
 export default class NewMeetup extends Component {
   static navigationOptions = {
-    tabBarIcon: ({ tintColor }) => <Icon name="plus-square" size={24} color={tintColor} />,
+    tabBarIcon: ({ tintColor }) => <Icon name="plus-square" size={20} color={tintColor} />,
   };
 
   state = {};

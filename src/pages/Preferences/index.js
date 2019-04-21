@@ -1,12 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-native/no-raw-text */
 import React, { Component } from 'react';
-import { CheckBox } from 'react-native-elements';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { UserActions } from '~/store/ducks/user';
-import api from '~/services/api';
+import MultipleCheckBox from '~/components/MultipleCheckBox'
 
 import {
   Container, Title, Paragraph, Button, ButtonText, SubTitle,
@@ -50,18 +48,6 @@ class Preferences extends Component {
     ],
   };
 
-  toggleCheckBox = (id) => {
-    const { checkboxes } = this.state;
-    const changedCheckBoxes = checkboxes.map((checkbox) => {
-      if (checkbox.id === id) {
-        checkbox.checked = !checkbox.checked;
-      }
-      return checkbox;
-    });
-
-    this.setState({ checkboxes: changedCheckBoxes });
-  };
-
   handleSubmit = async () => {
     const { checkboxes } = this.state;
     const { user, updateUserRequest } = this.props;
@@ -72,6 +58,10 @@ class Preferences extends Component {
 
     updateUserRequest({ preferences, firstLogin: false });
   };
+
+  handleCheckBox = (checkboxes) => {
+    this.setState(checkboxes)
+  }
 
   render() {
     const { checkboxes } = this.state;
@@ -85,25 +75,7 @@ class Preferences extends Component {
           selecionarmos os melhores meetups pra você:
         </Paragraph>
         <SubTitle>Preferências</SubTitle>
-        {checkboxes.map(checkbox => (
-          <CheckBox
-            key={checkbox.id}
-            title={checkbox.title}
-            checked={checkbox.checked}
-            checkedIcon="square"
-            uncheckedIcon="square"
-            checkedColor="#E5556E"
-            uncheckedColor="#666"
-            textStyle={{ fontSize: 18, color: 'white', fontWeight: 'normal' }}
-            containerStyle={{
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              padding: 0,
-              marginLeft: 0,
-            }}
-            onPress={() => this.toggleCheckBox(checkbox.id)}
-          />
-        ))}
+        <MultipleCheckBox checkboxes={checkboxes} handleCheckBox={this.handleCheckBox}/>
         <Button onPress={this.handleSubmit}>
           <ButtonText>Continuar</ButtonText>
         </Button>

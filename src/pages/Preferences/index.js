@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { UserActions } from '~/store/ducks/user';
-import MultipleCheckBox from '~/components/MultipleCheckBox'
+import MultipleCheckBox from '~/components/MultipleCheckBox';
+import { ActivityIndicator } from 'react-native';
 
 import {
   Container, Title, Paragraph, Button, ButtonText, SubTitle,
@@ -60,12 +61,12 @@ class Preferences extends Component {
   };
 
   handleCheckBox = (checkboxes) => {
-    this.setState(checkboxes)
-  }
+    this.setState(checkboxes);
+  };
 
   render() {
     const { checkboxes } = this.state;
-    const { user } = this.props;
+    const { user, loading } = this.props;
 
     return (
       <Container>
@@ -75,9 +76,13 @@ class Preferences extends Component {
           selecionarmos os melhores meetups pra você:
         </Paragraph>
         <SubTitle>Preferências</SubTitle>
-        <MultipleCheckBox checkboxes={checkboxes} handleCheckBox={this.handleCheckBox}/>
+        <MultipleCheckBox checkboxes={checkboxes} handleCheckBox={this.handleCheckBox} />
         <Button onPress={this.handleSubmit}>
-          <ButtonText>Continuar</ButtonText>
+          {loading ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <ButtonText>Continuar</ButtonText>
+          )}
         </Button>
       </Container>
     );
@@ -86,6 +91,7 @@ class Preferences extends Component {
 
 const mapStateToProps = state => ({
   user: state.login.user,
+  loading: state.user.loading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(UserActions, dispatch);

@@ -21,7 +21,6 @@ export default class App extends Component {
 
   async componentDidMount() {
     const token = await AsyncStorage.getItem('@Meetapp_token');
-    // await AsyncStorage.clear();
 
     this.setState({ userChecked: true, userLogged: !!token });
   }

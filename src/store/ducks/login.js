@@ -31,7 +31,7 @@ const INITIAL_STATE = Immutable({
 
 export const login = createReducer(INITIAL_STATE, {
   [Types.LOGIN_REQUEST]: state => state.merge({ loading: true }),
-  [Types.LOGIN_SUCCESS]: (state, { user }) => state.merge({ user, loading: false, firstLogin: false }),
+  [Types.LOGIN_SUCCESS]: (state, { user }) => state.merge({ user, loading: false, errors: [] }),
   [Types.LOGIN_FAILURE]: (state, { errors }) => state.merge({ errors, loading: false }),
   [Types.UPDATE_USER_SUCCESS]: (state, { user }) => state.merge({ user }),
 });

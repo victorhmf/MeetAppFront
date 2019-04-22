@@ -6,10 +6,10 @@ import { bindActionCreators } from 'redux';
 import { UserActions } from '~/store/ducks/user';
 
 import MultipleCheckBox from '~/components/MultipleCheckBox';
-import { ScrollView } from 'react-native';
+import { ScrollView, ActivityIndicator } from 'react-native';
 
 import {
-  Container, Label, Input, Button, ButtonText,
+  Container, Label, Input, Button, ButtonText, Error,
 } from './styles';
 
 class Profile extends Component {
@@ -76,16 +76,50 @@ class Profile extends Component {
   };
 
   handleSubmit = () => {
+    const { updateUserRequest } = this.props;
+    const userData = this.filterEmptyFields();
 
-  }
+    updateUserRequest(userData);
+  };
+
+  filterEmptyFields = () => {
+    const {
+      checkboxes, username, password, passwordConfirmation,
+    } = this.state;
+
+    const { username: currentUserName } = this.props;
+
+    const preferences = checkboxes
+      .filter(preference => preference.checked)
+      .map(preference => preference.id);
+
+    const userData = {
+      username,
+      password,
+      password_confirmation: passwordConfirmation,
+      preferences,
+    };
+
+    Object.keys(userData).forEach((key) => {
+      if (!userData[key] || userData[key] === currentUserName) {
+        delete userData[key];
+      }
+    });
+
+    return userData;
+  };
 
   render() {
     const {
       username, password, passwordConfirmation, checkboxes,
     } = this.state;
+    const { errors, loading } = this.props;
     return (
       <Container>
         <ScrollView showsVerticalScrollIndicator={false}>
+          {errors.map(
+            error => error.field === 'username' && <Error key={error.validation}>{error.message}</Error>,
+          )}
           <Label>Nome</Label>
           <Input
             autoCorrect={false}
@@ -95,6 +129,9 @@ class Profile extends Component {
             value={username}
             onChangeText={text => this.setState({ username: text })}
           />
+          {errors.map(
+            error => error.validation === 'min' && <Error key={error.validation}>{error.message}</Error>,
+          )}
           <Label>Senha</Label>
           <Input
             autoCapitalize="none"
@@ -105,6 +142,11 @@ class Profile extends Component {
             value={password}
             onChangeText={text => this.setState({ password: text })}
           />
+          {errors.map(
+            error => error.validation === 'confirmed' && (
+            <Error key={error.validation}>{error.message}</Error>
+            ),
+          )}
           <Label>Confirmação de senha</Label>
           <Input
             autoCapitalize="none"
@@ -115,10 +157,17 @@ class Profile extends Component {
             value={passwordConfirmation}
             onChangeText={text => this.setState({ passwordConfirmation: text })}
           />
+          {errors.map(
+            error => error.field === 'preferences' && <Error key={error.validation}>{error.message}</Error>,
+          )}
           <Label withMargin>Preferências</Label>
           <MultipleCheckBox checkboxes={checkboxes} handleCheckBox={this.handleCheckBox} />
-          <Button onPress={() => {}}>
-            <ButtonText>Salvar</ButtonText>
+          <Button onPress={this.handleSubmit}>
+            {loading ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <ButtonText>Salvar</ButtonText>
+            )}
           </Button>
         </ScrollView>
       </Container>
@@ -129,6 +178,8 @@ class Profile extends Component {
 const mapStateToProps = state => ({
   username: state.login.user.username,
   preferences: state.login.user.preferences,
+  errors: state.user.errors,
+  loading: state.user.loading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(UserActions, dispatch);

@@ -33,7 +33,13 @@ export function* updateUser(user) {
 
     yield put(UserActions.updateUserSuccess(data));
 
-    navigate('TabNavigator');
+    showMessage({
+      message: 'Perfil atualizado com sucesso!',
+      type: 'success',
+      duration: 3000,
+    });
+
+    navigate('Tabs');
   } catch (error) {
     const { data } = error.response;
     yield put(UserActions.updateUserFailure(data));

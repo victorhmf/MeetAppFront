@@ -32,7 +32,7 @@ const INITIAL_STATE = Immutable({
 */
 
 const userRequest = state => state.merge({ loading: true });
-const userSuccess = (state, { user }) => state.merge({ loading: false, user });
+const userSuccess = (state, { user }) => state.merge({ loading: false, user, errors: [] });
 const userFailure = (state, { errors }) => state.merge({ loading: false, errors });
 
 export const user = createReducer(INITIAL_STATE, {

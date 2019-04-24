@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import '~/config/ReactotronConfig';
 
@@ -35,9 +35,11 @@ export default class App extends Component {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={theme}>
-            <Routes ref={setNavigator} />
+            <Fragment>
+              <Routes ref={setNavigator} />
+              <FlashMessage position="top" />
+            </Fragment>
           </ThemeProvider>
-          <FlashMessage position="top" />
         </PersistGate>
       </Provider>
     );

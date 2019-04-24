@@ -6,6 +6,10 @@ import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
 import moment from 'moment';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { MeetupActions } from '~/store/ducks/meetup';
+
 import {
   Container,
   Label,
@@ -19,7 +23,7 @@ import {
 
 import MultipleCheckBox from '~/components/MultipleCheckBox';
 
-export default class NewMeetup extends Component {
+class NewMeetup extends Component {
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) => <Icon name="plus-square" size={20} color={tintColor} />,
   };
@@ -28,7 +32,7 @@ export default class NewMeetup extends Component {
     title: '',
     description: '',
     date: '',
-    imageSource: '',
+    image: null,
     location: '',
     checkboxes: [
       {
@@ -64,6 +68,19 @@ export default class NewMeetup extends Component {
     ],
   };
 
+  componentDidMount() {
+    const { navigation } = this.props;
+    const initialState = this.state;
+
+    this.navListener = navigation.addListener('didFocus', () => {
+      this.setState(initialState);
+    });
+  }
+
+  componentWillUnmount() {
+    this.navListener.remove();
+  }
+
   handleCheckBox = (checkboxes) => {
     this.setState(checkboxes);
   };
@@ -74,18 +91,55 @@ export default class NewMeetup extends Component {
     };
 
     ImagePicker.launchImageLibrary(options, (response) => {
-      const source = { uri: response.uri };
-      this.setState({ imageSource: source });
+      const {
+        uri, type, fileName, fileSize,
+      } = response;
+
+      this.setState({
+        image: {
+          name: fileName,
+          size: fileSize,
+          uri,
+          type,
+        },
+      });
+
+      if (response.didCancel) {
+        this.setState({ image: null });
+      }
+    });
+  };
+
+  handleSubmit = () => {
+    const {
+      image, title, description, date, location, checkboxes,
+    } = this.state;
+    const { createMeetupRequest } = this.props;
+
+    const preferences = checkboxes
+      .filter(preference => preference.checked)
+      .map(preference => preference.id);
+
+    createMeetupRequest(image, {
+      title,
+      description,
+      date,
+      location,
+      preferences,
     });
   };
 
   render() {
     const {
-      title, description, location, date, checkboxes, imageSource,
+      title, description, location, date, checkboxes, image,
     } = this.state;
+    const { loading, errors } = this.props;
     return (
       <Container>
         <ScrollView showsVerticalScrollIndicator={false}>
+          {errors.map(
+            error => error.field === 'title' && <Error key={error.validation}>{error.message}</Error>,
+          )}
           <Label>Título</Label>
           <Input
             autoCorrect={false}
@@ -95,6 +149,11 @@ export default class NewMeetup extends Component {
             value={title}
             onChangeText={text => this.setState({ title: text })}
           />
+          {errors.map(
+            error => error.field === 'description' && (
+            <Error key={error.validation}>{error.message}</Error>
+            ),
+          )}
           <Label>Descrição</Label>
           <Input
             autoCorrect={false}
@@ -104,7 +163,9 @@ export default class NewMeetup extends Component {
             value={description}
             onChangeText={text => this.setState({ description: text })}
           />
-
+          {errors.map(
+            error => error.field === 'date' && <Error key={error.validation}>{error.message}</Error>,
+          )}
           <Label>Data</Label>
           <DatePicker
             style={{ marginBottom: 15, width: '100%' }}
@@ -134,16 +195,23 @@ export default class NewMeetup extends Component {
               this.setState({ date: text });
             }}
           />
-
+          {errors.map(
+            error => error.field === 'file' && (
+            <Error key={error.validation}>Por favor, insira uma imagem válida</Error>
+            ),
+          )}
           <Label withMargin>Imagem</Label>
           <ImageButton onPress={this.handleChooseImage}>
-            {imageSource.uri ? (
-              <StyledImage source={imageSource} />
+            {image ? (
+              <StyledImage source={{ uri: image.uri }} />
             ) : (
               <Icon name="camera" size={20} color="white" />
             )}
           </ImageButton>
 
+          {errors.map(
+            error => error.field === 'location' && <Error key={error.validation}>{error.message}</Error>,
+          )}
           <Label>Localização</Label>
           <Input
             autoCorrect={false}
@@ -153,13 +221,35 @@ export default class NewMeetup extends Component {
             value={location}
             onChangeText={text => this.setState({ location: text })}
           />
+
+          {errors.map(
+            error => error.field === 'preferences' && (
+            <Error key={error.validation}>{error.message}</Error>
+            ),
+          )}
           <Label withMargin>Tema do meetup</Label>
           <MultipleCheckBox checkboxes={checkboxes} handleCheckBox={this.handleCheckBox} />
-          <Button>
-            <ButtonText>Salvar</ButtonText>
+          <Button onPress={this.handleSubmit}>
+            {loading ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <ButtonText>Salvar</ButtonText>
+            )}
           </Button>
         </ScrollView>
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state.meetup.loading,
+  errors: state.meetup.errors,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(MeetupActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NewMeetup);

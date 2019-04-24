@@ -39,7 +39,7 @@ export function* updateUser(user) {
       duration: 3000,
     });
 
-    navigate('Tabs');
+    navigate('DashBoard');
   } catch (error) {
     const { data } = error.response;
     yield put(UserActions.updateUserFailure(data));

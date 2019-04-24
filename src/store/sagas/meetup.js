@@ -32,7 +32,7 @@ export function* createMeetup({ file, meetup }) {
       duration: 3000,
     });
 
-    navigate('Tabs');
+    navigate('DashBoard');
   } catch (error) {
     yield put(MeetupActions.createMeetupFailure(error.response.data));
   }

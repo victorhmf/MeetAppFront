@@ -13,6 +13,7 @@ export const theme = {
     danger: '#ea5050',
   },
   fontSize: {
+    tiny: '14px',
     small: '16px',
     medium: '20px',
     big: '24px',

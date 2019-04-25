@@ -8,7 +8,7 @@ import {
 import Signin from '~/pages/Signin';
 import Signup from '~/pages/Signup';
 import Preferences from '~/pages/Preferences';
-import DashBoard from '~/pages/Dashboard';
+import Dashboard from '~/pages/Dashboard';
 import Meetup from '~/pages/Meetup';
 import NewMeetup from '~/pages/NewMeetup';
 import Profile from '~/pages/Profile';
@@ -22,11 +22,11 @@ const AuthNavigator = createSwitchNavigator({ Signin, Signup });
 const TabNavigator = createBottomTabNavigator(
   {
     NewMeetup,
-    DashBoard,
+    Dashboard,
     Search,
   },
   {
-    initialRouteName: 'DashBoard',
+    initialRouteName: 'Dashboard',
     tabBarOptions: {
       showIcon: true,
       showLabel: false,
@@ -55,7 +55,7 @@ const AppNavigator = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         const { routeName } = navigation.state.routes[navigation.state.index]; // This gives current route
         switch (routeName) {
-          case 'DashBoard':
+          case 'Dashboard':
             return headerOptions('Início');
           case 'NewMeetup':
             return headerOptions('Novo Meetup');

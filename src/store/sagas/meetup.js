@@ -24,7 +24,7 @@ export function* createMeetup({ file, meetup }) {
       file_id: fileData.id,
     });
 
-    yield put(MeetupActions.createMeetupSuccess(meetupData));
+    yield put(MeetupActions.meetupSuccess(meetupData));
 
     showMessage({
       message: 'Meetup criado com sucesso!',
@@ -32,8 +32,24 @@ export function* createMeetup({ file, meetup }) {
       duration: 3000,
     });
 
-    navigate('DashBoard');
+    navigate('Dashboard');
   } catch (error) {
-    yield put(MeetupActions.createMeetupFailure(error.response.data));
+    yield put(MeetupActions.meetupFailure(error.response.data));
+  }
+}
+
+export function* getMeetups() {
+  try {
+    const { data: recommended } = yield call(api.get, '/meetups/?filter=recommended');
+    const { data: subscribed } = yield call(api.get, '/meetups/?filter=subscribed');
+    const { data: notSubscribed } = yield call(api.get, '/meetups/?filter=notsubscribed');
+
+    const data = { recommended, subscribed, notSubscribed };
+
+    yield put(MeetupActions.meetupSuccess(data));
+  } catch (error) {
+    yield put(
+      MeetupActions.meetupFailure({ message: 'Não foi possível carregar os dados no momento.' }),
+    );
   }
 }

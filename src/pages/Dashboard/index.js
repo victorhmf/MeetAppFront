@@ -1,72 +1,106 @@
 /* eslint-disable react-native/no-raw-text */
 import React, { Component } from 'react';
 
-import { ScrollView, FlatList } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { MeetupActions } from '~/store/ducks/meetup';
+
+import {
+  ScrollView, FlatList, ActivityIndicator, RefreshControl,
+} from 'react-native';
 
 import MeetupItem from '~/components/MeetupItem';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Container, Label } from './styles';
+import {
+  Container, Label, Message, Error,
+} from './styles';
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) => <Icon name="home" size={24} color={tintColor} />,
   };
 
   state = {
-    meetups: [
-      {
-        id: 1,
-        title: 'Meetup React Native dasdasdsa d ',
-        members: 3,
-        image: 'https://facebook.github.io/react-native/docs/assets/favicon.png',
-      },
-      {
-        id: 2,
-        title: 'Meetup TESTE',
-        members: 5,
-        image: 'https://facebook.github.io/react-native/docs/assets/favicon.png',
-      },
-      {
-        id: 3,
-        title: 'Meetup Flex Box',
-        members: 6,
-        image: 'https://facebook.github.io/react-native/docs/assets/favicon.png',
-      },
-    ],
+    refreshing: false,
+  };
+
+  componentDidMount() {
+    const { getMeetupsRequest } = this.props;
+    getMeetupsRequest();
+  }
+
+  onRefresh = () => {
+    const { getMeetupsRequest } = this.props;
+    getMeetupsRequest();
   };
 
   renderListItem = ({ item }) => <MeetupItem item={item} />;
 
   render() {
-    const { meetups } = this.state;
+    const { meetups, error, loading } = this.props;
+    const { refreshing } = this.state;
     return (
       <Container>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Label withMargin>Inscrições</Label>
-          <FlatList
-            horizontal
-            data={meetups}
-            keyExtractor={item => String(item.id)}
-            renderItem={this.renderListItem}
-          />
-          <Label withMargin>Próximos meetups</Label>
-          <FlatList
-            horizontal
-            data={meetups}
-            keyExtractor={item => String(item.id)}
-            renderItem={this.renderListItem}
-          />
-          <Label withMargin>Recomendados</Label>
-          <FlatList
-            horizontal
-            data={meetups}
-            keyExtractor={item => String(item.id)}
-            renderItem={this.renderListItem}
-          />
-        </ScrollView>
+        {meetups ? (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={loading} onRefresh={this.onRefresh} />}
+          >
+            <Label withMargin>Inscrições</Label>
+            {meetups.subscribed.length ? (
+              <FlatList
+                horizontal
+                data={meetups.subscribed}
+                keyExtractor={item => String(item.id)}
+                renderItem={this.renderListItem}
+              />
+            ) : (
+              <Message>Você ainda não se inscreveu em nennhum Meetup</Message>
+            )}
+            <Label withMargin>Próximos meetups</Label>
+            {meetups.notSubscribed.length ? (
+              <FlatList
+                horizontal
+                data={meetups.notSubscribed}
+                keyExtractor={item => String(item.id)}
+                renderItem={this.renderListItem}
+              />
+            ) : (
+              <Message>Não há Meetups disponíveis no momento</Message>
+            )}
+            <Label withMargin>Recomendados</Label>
+            {meetups.recommended.length ? (
+              <FlatList
+                horizontal
+                data={meetups.recommended}
+                keyExtractor={item => String(item.id)}
+                renderItem={this.renderListItem}
+              />
+            ) : (
+              <Message>Não encontramos meetups recomendados para você</Message>
+            )}
+          </ScrollView>
+        ) : (
+          (error && <Error>{error.message}</Error>) || (
+            <ActivityIndicator size="large" color="white" />
+          )
+        )}
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state.meetup.loading,
+  error: state.meetup.errors,
+  meetups: state.meetup.data,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(MeetupActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Dashboard);

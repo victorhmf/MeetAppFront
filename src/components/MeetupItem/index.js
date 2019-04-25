@@ -13,13 +13,13 @@ import {
 
 const MeetupItem = ({ item }) => (
   <Container>
-    <StyledImage source={{ uri: item.image }} />
+    <StyledImage source={{ uri: item.file.url }} />
     <InfoContainer>
       <InfoContent>
         <Title numberOfLines={1} ellipsizeMode="tail">
           {item.title}
         </Title>
-        <SubTitle>{item.members} membros</SubTitle>
+        <SubTitle>{item.__meta__.members} membros</SubTitle>
       </InfoContent>
       <NavigateButton>
         <Icon name="angle-right" size={20} color="white" />

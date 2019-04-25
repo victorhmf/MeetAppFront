@@ -7,8 +7,9 @@ import Immutable from 'seamless-immutable';
 
 export const { Types, Creators } = createActions({
   createMeetupRequest: ['file', 'meetup'],
-  createMeetupSuccess: ['meetup'],
-  createMeetupFailure: ['errors'],
+  getMeetupsRequest: [null],
+  meetupSuccess: ['data'],
+  meetupFailure: ['errors'],
 });
 
 export const MeetupTypes = Types;
@@ -19,9 +20,9 @@ export const MeetupActions = Creators;
 */
 
 const INITIAL_STATE = Immutable({
-  meetup: null,
+  data: null,
   loading: false,
-  errors: [],
+  errors: null,
 });
 
 /*
@@ -29,11 +30,12 @@ const INITIAL_STATE = Immutable({
 */
 
 const meetupRequest = state => state.merge({ loading: true });
-const meetupSuccess = (state, { meetup }) => state.merge({ meetup, loading: false, errors: [] });
+const meetupSuccess = (state, { data }) => state.merge({ data, loading: false, errors: [] });
 const meetupFailure = (state, { errors }) => state.merge({ errors, loading: false });
 
 export const meetup = createReducer(INITIAL_STATE, {
   [Types.CREATE_MEETUP_REQUEST]: meetupRequest,
-  [Types.CREATE_MEETUP_SUCCESS]: meetupSuccess,
-  [Types.CREATE_MEETUP_FAILURE]: meetupFailure,
+  [Types.GET_MEETUPS_REQUEST]: meetupRequest,
+  [Types.MEETUP_SUCCESS]: meetupSuccess,
+  [Types.MEETUP_FAILURE]: meetupFailure,
 });

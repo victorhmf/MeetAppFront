@@ -137,7 +137,7 @@ class NewMeetup extends Component {
     return (
       <Container>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {errors.map(
+          {errors && errors.map(
             error => error.field === 'title' && <Error key={error.validation}>{error.message}</Error>,
           )}
           <Label>Título</Label>
@@ -149,7 +149,7 @@ class NewMeetup extends Component {
             value={title}
             onChangeText={text => this.setState({ title: text })}
           />
-          {errors.map(
+          {errors && errors.map(
             error => error.field === 'description' && (
             <Error key={error.validation}>{error.message}</Error>
             ),
@@ -163,7 +163,7 @@ class NewMeetup extends Component {
             value={description}
             onChangeText={text => this.setState({ description: text })}
           />
-          {errors.map(
+          {errors && errors.map(
             error => error.field === 'date' && <Error key={error.validation}>{error.message}</Error>,
           )}
           <Label>Data</Label>
@@ -195,7 +195,7 @@ class NewMeetup extends Component {
               this.setState({ date: text });
             }}
           />
-          {errors.map(
+          {errors && errors.map(
             error => error.field === 'file' && (
             <Error key={error.validation}>Por favor, insira uma imagem válida</Error>
             ),
@@ -209,7 +209,7 @@ class NewMeetup extends Component {
             )}
           </ImageButton>
 
-          {errors.map(
+          {errors && errors.map(
             error => error.field === 'location' && <Error key={error.validation}>{error.message}</Error>,
           )}
           <Label>Localização</Label>
@@ -222,7 +222,7 @@ class NewMeetup extends Component {
             onChangeText={text => this.setState({ location: text })}
           />
 
-          {errors.map(
+          {errors && errors.map(
             error => error.field === 'preferences' && (
             <Error key={error.validation}>{error.message}</Error>
             ),

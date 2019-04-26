@@ -7,8 +7,11 @@ import Immutable from 'seamless-immutable';
 
 export const { Types, Creators } = createActions({
   createMeetupRequest: ['file', 'meetup'],
+  createMeetupSuccess: ['newMeetup'],
   getMeetupsRequest: [null],
-  meetupSuccess: ['data'],
+  getMeetupsSuccess: ['meetups'],
+  showMeetupRequest: ['id'],
+  showMeetupSuccess: ['activeMeetup'],
   meetupFailure: ['errors'],
 });
 
@@ -20,7 +23,9 @@ export const MeetupActions = Creators;
 */
 
 const INITIAL_STATE = Immutable({
-  data: null,
+  newMeetup: null,
+  meetups: null,
+  activeMeetup: null,
   loading: false,
   errors: null,
 });
@@ -30,12 +35,17 @@ const INITIAL_STATE = Immutable({
 */
 
 const meetupRequest = state => state.merge({ loading: true });
-const meetupSuccess = (state, { data }) => state.merge({ data, loading: false, errors: [] });
+const createMeetupSuccess = (state, { newMeetup }) => state.merge({ newMeetup, loading: false, errors: null });
+const getMeetupsSuccess = (state, { meetups }) => state.merge({ meetups, loading: false, errors: null });
+const showMeetupSuccess = (state, { activeMeetup }) => state.merge({ activeMeetup, loading: false, errors: null });
 const meetupFailure = (state, { errors }) => state.merge({ errors, loading: false });
 
 export const meetup = createReducer(INITIAL_STATE, {
   [Types.CREATE_MEETUP_REQUEST]: meetupRequest,
+  [Types.CREATE_MEETUP_SUCCESS]: createMeetupSuccess,
   [Types.GET_MEETUPS_REQUEST]: meetupRequest,
-  [Types.MEETUP_SUCCESS]: meetupSuccess,
+  [Types.GET_MEETUPS_SUCCESS]: getMeetupsSuccess,
+  [Types.SHOW_MEETUP_REQUEST]: meetupRequest,
+  [Types.SHOW_MEETUP_SUCCESS]: showMeetupSuccess,
   [Types.MEETUP_FAILURE]: meetupFailure,
 });

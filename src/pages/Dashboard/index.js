@@ -22,10 +22,6 @@ class Dashboard extends Component {
     tabBarIcon: ({ tintColor }) => <Icon name="home" size={24} color={tintColor} />,
   };
 
-  state = {
-    refreshing: false,
-  };
-
   componentDidMount() {
     const { getMeetupsRequest } = this.props;
     getMeetupsRequest();
@@ -40,7 +36,6 @@ class Dashboard extends Component {
 
   render() {
     const { meetups, error, loading } = this.props;
-    const { refreshing } = this.state;
     return (
       <Container>
         {meetups ? (
@@ -95,7 +90,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => ({
   loading: state.meetup.loading,
   error: state.meetup.errors,
-  meetups: state.meetup.data,
+  meetups: state.meetup.meetups,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(MeetupActions, dispatch);

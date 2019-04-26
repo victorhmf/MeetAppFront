@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { withNavigation } from 'react-navigation';
+
 import {
   Container,
   StyledImage,
@@ -11,7 +13,7 @@ import {
   NavigateButton,
 } from './styles';
 
-const MeetupItem = ({ item }) => (
+const MeetupItem = ({ item, navigation }) => (
   <Container>
     <StyledImage source={{ uri: item.file.url }} />
     <InfoContainer>
@@ -21,11 +23,11 @@ const MeetupItem = ({ item }) => (
         </Title>
         <SubTitle>{item.__meta__.members} membros</SubTitle>
       </InfoContent>
-      <NavigateButton>
+      <NavigateButton onPress={() => navigation.navigate('Meetup', { meetupId: item.id })}>
         <Icon name="angle-right" size={20} color="white" />
       </NavigateButton>
     </InfoContainer>
   </Container>
 );
 
-export default MeetupItem;
+export default withNavigation(MeetupItem);

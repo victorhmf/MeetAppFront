@@ -24,7 +24,7 @@ export function* createMeetup({ file, meetup }) {
       file_id: fileData.id,
     });
 
-    yield put(MeetupActions.meetupSuccess(meetupData));
+    yield put(MeetupActions.createMeetupSuccess(meetupData));
 
     showMessage({
       message: 'Meetup criado com sucesso!',
@@ -46,10 +46,20 @@ export function* getMeetups() {
 
     const data = { recommended, subscribed, notSubscribed };
 
-    yield put(MeetupActions.meetupSuccess(data));
+    yield put(MeetupActions.getMeetupsSuccess(data));
   } catch (error) {
     yield put(
       MeetupActions.meetupFailure({ message: 'Não foi possível carregar os dados no momento.' }),
     );
+  }
+}
+
+export function* showMeetup({ id }) {
+  try {
+    const { data } = yield call(api.get, `/meetups/${id}`);
+
+    yield put(MeetupActions.showMeetupSuccess(data));
+  } catch (error) {
+    console.tron.log(error);
   }
 }

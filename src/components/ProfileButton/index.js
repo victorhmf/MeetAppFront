@@ -6,11 +6,11 @@ import { withNavigation } from 'react-navigation';
 
 import { Container } from './styles';
 
-const ProfileButton = props => (
+const ProfileButton = ({ navigation }) => (
   <Container>
     <TouchableOpacity
       onPress={() => {
-        props.navigation.navigate('Profile');
+        navigation.navigate('Profile');
       }}
     >
       <Icon name="user" size={22} color="white" />

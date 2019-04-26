@@ -60,6 +60,8 @@ export function* showMeetup({ id }) {
 
     yield put(MeetupActions.showMeetupSuccess(data));
   } catch (error) {
-    console.tron.log(error);
+    yield put(
+      MeetupActions.meetupFailure({ message: 'Não foi possível carregar os dados no momento.' }),
+    );
   }
 }

@@ -38,49 +38,49 @@ class Dashboard extends Component {
     const { meetups, error, loading } = this.props;
     return (
       <Container>
-        {meetups ? (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            refreshControl={<RefreshControl refreshing={loading} onRefresh={this.onRefresh} />}
-          >
-            <Label withMargin>Inscrições</Label>
-            {meetups.subscribed.length ? (
-              <FlatList
-                horizontal
-                data={meetups.subscribed}
-                keyExtractor={item => String(item.id)}
-                renderItem={this.renderListItem}
-              />
-            ) : (
-              <Message>Você ainda não se inscreveu em nennhum Meetup</Message>
-            )}
-            <Label withMargin>Próximos meetups</Label>
-            {meetups.notSubscribed.length ? (
-              <FlatList
-                horizontal
-                data={meetups.notSubscribed}
-                keyExtractor={item => String(item.id)}
-                renderItem={this.renderListItem}
-              />
-            ) : (
-              <Message>Não há Meetups disponíveis no momento</Message>
-            )}
-            <Label withMargin>Recomendados</Label>
-            {meetups.recommended.length ? (
-              <FlatList
-                horizontal
-                data={meetups.recommended}
-                keyExtractor={item => String(item.id)}
-                renderItem={this.renderListItem}
-              />
-            ) : (
-              <Message>Não encontramos meetups recomendados para você</Message>
-            )}
-          </ScrollView>
+        {error ? (
+          <Error>{error.message}</Error>
         ) : (
-          (error && <Error>{error.message}</Error>) || (
-            <ActivityIndicator size="large" color="white" />
-          )
+          (meetups && (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              refreshControl={<RefreshControl refreshing={loading} onRefresh={this.onRefresh} />}
+            >
+              <Label withMargin>Inscrições</Label>
+              {meetups.subscribed.length ? (
+                <FlatList
+                  horizontal
+                  data={meetups.subscribed}
+                  keyExtractor={item => String(item.id)}
+                  renderItem={this.renderListItem}
+                />
+              ) : (
+                <Message>Você ainda não se inscreveu em nennhum Meetup</Message>
+              )}
+              <Label withMargin>Próximos meetups</Label>
+              {meetups.notSubscribed.length ? (
+                <FlatList
+                  horizontal
+                  data={meetups.notSubscribed}
+                  keyExtractor={item => String(item.id)}
+                  renderItem={this.renderListItem}
+                />
+              ) : (
+                <Message>Não há Meetups disponíveis no momento</Message>
+              )}
+              <Label withMargin>Recomendados</Label>
+              {meetups.recommended.length ? (
+                <FlatList
+                  horizontal
+                  data={meetups.recommended}
+                  keyExtractor={item => String(item.id)}
+                  renderItem={this.renderListItem}
+                />
+              ) : (
+                <Message>Não encontramos meetups recomendados para você</Message>
+              )}
+            </ScrollView>
+          )) || <ActivityIndicator size="large" color="white" />
         )}
       </Container>
     );

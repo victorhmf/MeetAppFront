@@ -30,13 +30,20 @@ class Meetup extends Component {
     showMeetupRequest(meetupId);
   }
 
+  handleSubmit = () => {
+    const { meetupId } = this.props.navigation.state.params;
+    const { subscribeMeetupRequest } = this.props;
+
+    subscribeMeetupRequest(meetupId);
+  };
+
   render() {
-    const { meetup, error } = this.props;
+    const { meetup, showMeetupError, subscribeMeetupError, subscribeMeetupLoading } = this.props;
     return (
       <Container>
-        {error ? (
+        {showMeetupError ? (
           <InfoContainer>
-            <Error>{error.message}</Error>
+            <Error>{showMeetupError.error.message}</Error>
           </InfoContainer>
         ) : (
           (meetup && (
@@ -62,8 +69,13 @@ class Meetup extends Component {
                     .utc(false)
                     .format('DD/MM/YYYY HH:mm')}
                 </SubTitle>
-                <Button>
-                  <ButtonText>Inscreva-se</ButtonText>
+                {subscribeMeetupError && <Error>{subscribeMeetupError.error.message}</Error>}
+                <Button onPress={this.handleSubmit}>
+                  {subscribeMeetupLoading ? (
+                    <ActivityIndicator size="small" color="white" />
+                  ) : (
+                    <ButtonText>Inscreva-se</ButtonText>
+                  )}
                 </Button>
               </InfoContainer>
             </ScrollView>
@@ -75,8 +87,10 @@ class Meetup extends Component {
 }
 
 const mapStateToProps = state => ({
-  meetup: state.meetup.activeMeetup,
-  error: state.meetup.errors,
+  meetup: state.meetup.activeMeetup.meetup,
+  showMeetupError: state.meetup.activeMeetup.error,
+  subscribeMeetupError: state.meetup.subscribedMeetup.error,
+  subscribeMeetupLoading: state.meetup.subscribedMeetup.loading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(MeetupActions, dispatch);

@@ -1,18 +1,22 @@
 import { createReducer, createActions } from 'reduxsauce';
 import Immutable from 'seamless-immutable';
-
 /*
   Actions Types and Creators
 */
 
 export const { Types, Creators } = createActions({
   createMeetupRequest: ['file', 'meetup'],
-  createMeetupSuccess: ['newMeetup'],
+  createMeetupSuccess: ['meetup'],
+  createMeetupFailure: ['error'],
   getMeetupsRequest: [null],
   getMeetupsSuccess: ['meetups'],
+  getMeetupsFailure: ['error'],
   showMeetupRequest: ['id'],
-  showMeetupSuccess: ['activeMeetup'],
-  meetupFailure: ['errors'],
+  showMeetupSuccess: ['meetup'],
+  showMeetupFailure: ['error'],
+  subscribeMeetupRequest: ['id'],
+  subscribeMeetupSuccess: [null],
+  subscribeMeetupFailure: ['error'],
 });
 
 export const MeetupTypes = Types;
@@ -23,29 +27,46 @@ export const MeetupActions = Creators;
 */
 
 const INITIAL_STATE = Immutable({
-  newMeetup: null,
-  meetups: null,
-  activeMeetup: null,
-  loading: false,
-  errors: null,
+  newMeetup: { meetup: null, error: null, loading: false },
+  meetupList: { meetups: null, error: null, loading: false },
+  activeMeetup: { meetup: null, error: null, loading: false },
+  subscribedMeetup: { error: null, loading: false },
 });
 
 /*
   Reducer
 */
 
-const meetupRequest = state => state.merge({ loading: true });
-const createMeetupSuccess = (state, { newMeetup }) => state.merge({ newMeetup, loading: false, errors: null });
-const getMeetupsSuccess = (state, { meetups }) => state.merge({ meetups, loading: false, errors: null });
-const showMeetupSuccess = (state, { activeMeetup }) => state.merge({ activeMeetup, loading: false, errors: null });
-const meetupFailure = (state, { errors }) => state.merge({ errors, loading: false });
+const createMeetupRequest = state => state.merge({ newMeetup: { loading: true } });
+const createMeetupSuccess = (state, { meetup }) => state.merge({ newMeetup: { meetup, loading: false, error: null } });
+const createMeetupFailure = (state, { error }) => state.merge({ newMeetup: { error, loading: false } });
+
+const getMeetupsRequest = state => state.merge({ meetupList: { loading: true } });
+const getMeetupsSuccess = (state, { meetups }) => state.merge({ meetupList: { meetups, loading: false, error: null } });
+const getMeetupsFailure = (state, { error }) => state.merge({ meetupList: { error, loading: false } });
+
+const showMeetupRequest = state => state.merge({
+  activeMeetup: { loading: true },
+  subscribedMeetup: { error: null, loading: false },
+});
+const showMeetupSuccess = (state, { meetup }) => state.merge({ activeMeetup: { meetup, loading: false, error: null } });
+const showMeetupFailure = (state, { error }) => state.merge({ activeMeetup: { error, loading: false } });
+
+const subscribeMeetupRequest = state => state.merge({ subscribedMeetup: { loading: true } });
+const subscribeMeetupSuccess = state => state.merge({ subscribedMeetup: { loading: false, error: null } });
+const subscribeMeetupFailure = (state, { error }) => state.merge({ subscribedMeetup: { error, loading: false } });
 
 export const meetup = createReducer(INITIAL_STATE, {
-  [Types.CREATE_MEETUP_REQUEST]: meetupRequest,
+  [Types.CREATE_MEETUP_REQUEST]: createMeetupRequest,
   [Types.CREATE_MEETUP_SUCCESS]: createMeetupSuccess,
-  [Types.GET_MEETUPS_REQUEST]: meetupRequest,
+  [Types.CREATE_MEETUP_FAILURE]: createMeetupFailure,
+  [Types.GET_MEETUPS_REQUEST]: getMeetupsRequest,
   [Types.GET_MEETUPS_SUCCESS]: getMeetupsSuccess,
-  [Types.SHOW_MEETUP_REQUEST]: meetupRequest,
+  [Types.GET_MEETUPS_FAILURE]: getMeetupsFailure,
+  [Types.SHOW_MEETUP_REQUEST]: showMeetupRequest,
   [Types.SHOW_MEETUP_SUCCESS]: showMeetupSuccess,
-  [Types.MEETUP_FAILURE]: meetupFailure,
+  [Types.SHOW_MEETUP_FAILURE]: showMeetupFailure,
+  [Types.SUBSCRIBE_MEETUP_REQUEST]: subscribeMeetupRequest,
+  [Types.SUBSCRIBE_MEETUP_SUCCESS]: subscribeMeetupSuccess,
+  [Types.SUBSCRIBE_MEETUP_FAILURE]: subscribeMeetupFailure,
 });

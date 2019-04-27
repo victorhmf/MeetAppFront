@@ -39,7 +39,7 @@ class Dashboard extends Component {
     return (
       <Container>
         {error ? (
-          <Error>{error.message}</Error>
+          <Error>{error.error.message}</Error>
         ) : (
           (meetups && (
             <ScrollView
@@ -88,9 +88,9 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.meetup.loading,
-  error: state.meetup.errors,
-  meetups: state.meetup.meetups,
+  loading: state.meetup.meetupList.loading,
+  error: state.meetup.meetupList.error,
+  meetups: state.meetup.meetupList.meetups,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(MeetupActions, dispatch);

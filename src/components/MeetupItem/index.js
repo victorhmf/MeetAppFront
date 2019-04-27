@@ -27,7 +27,9 @@ const MeetupItem = ({ item, navigation, width }) => (
             : `${item.__meta__.members} membros`}
         </SubTitle>
       </InfoContent>
-      <NavigateButton onPress={() => navigation.navigate('Meetup', { meetupId: item.id })}>
+      <NavigateButton
+        onPress={() => navigation.navigate('Meetup', { id: item.id, title: item.title })}
+      >
         <Icon name="angle-right" size={20} color="white" />
       </NavigateButton>
     </InfoContainer>

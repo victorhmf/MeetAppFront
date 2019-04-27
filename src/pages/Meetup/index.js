@@ -21,20 +21,21 @@ import {
 } from './styles';
 
 class Meetup extends Component {
-  state = {};
+  static navigationOptions = ({ navigation }) => ({ headerTitle: navigation.state.params.title })
+  
 
   componentDidMount() {
-    const { meetupId } = this.props.navigation.state.params;
+    const { id } = this.props.navigation.state.params;
     const { showMeetupRequest } = this.props;
 
-    showMeetupRequest(meetupId);
+    showMeetupRequest(id);
   }
 
   handleSubmit = () => {
-    const { meetupId } = this.props.navigation.state.params;
+    const { id } = this.props.navigation.state.params;
     const { subscribeMeetupRequest } = this.props;
 
-    subscribeMeetupRequest(meetupId);
+    subscribeMeetupRequest(id);
   };
 
   render() {

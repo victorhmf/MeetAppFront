@@ -17,6 +17,10 @@ export const { Types, Creators } = createActions({
   subscribeMeetupRequest: ['id'],
   subscribeMeetupSuccess: [null],
   subscribeMeetupFailure: ['error'],
+  searchMeetupRequest: ['title'],
+  searchMeetupSuccess: ['meetups'],
+  searchMeetupFailure: ['error'],
+  searchMeetupReset: ['null'],
 });
 
 export const MeetupTypes = Types;
@@ -31,6 +35,7 @@ const INITIAL_STATE = Immutable({
   meetupList: { meetups: null, error: null, loading: false },
   activeMeetup: { meetup: null, error: null, loading: false },
   subscribedMeetup: { error: null, loading: false },
+  searchedMeetup: { meetups: null, error: null, loading: false },
 });
 
 /*
@@ -56,6 +61,11 @@ const subscribeMeetupRequest = state => state.merge({ subscribedMeetup: { loadin
 const subscribeMeetupSuccess = state => state.merge({ subscribedMeetup: { loading: false, error: null } });
 const subscribeMeetupFailure = (state, { error }) => state.merge({ subscribedMeetup: { error, loading: false } });
 
+const searchMeetupRequest = state => state.merge({ searchedMeetup: { loading: true } });
+const searchMeetupSuccess = (state, { meetups }) => state.merge({ searchedMeetup: { meetups, loading: false, error: null } });
+const searchMeetupFailure = (state, { error }) => state.merge({ searchedMeetup: { error, loading: false } });
+const searchMeetupReset = (state) => state.merge({ searchedMeetup: { meetups: null, error: null, loading: false } });
+
 export const meetup = createReducer(INITIAL_STATE, {
   [Types.CREATE_MEETUP_REQUEST]: createMeetupRequest,
   [Types.CREATE_MEETUP_SUCCESS]: createMeetupSuccess,
@@ -69,4 +79,8 @@ export const meetup = createReducer(INITIAL_STATE, {
   [Types.SUBSCRIBE_MEETUP_REQUEST]: subscribeMeetupRequest,
   [Types.SUBSCRIBE_MEETUP_SUCCESS]: subscribeMeetupSuccess,
   [Types.SUBSCRIBE_MEETUP_FAILURE]: subscribeMeetupFailure,
+  [Types.SEARCH_MEETUP_REQUEST]: searchMeetupRequest,
+  [Types.SEARCH_MEETUP_SUCCESS]: searchMeetupSuccess,
+  [Types.SEARCH_MEETUP_FAILURE]: searchMeetupFailure,
+  [Types.SEARCH_MEETUP_RESET]: searchMeetupReset,
 });

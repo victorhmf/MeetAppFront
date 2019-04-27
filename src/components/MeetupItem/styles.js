@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  width: 290px;
+  width: ${props => props.width};
   background-color: white;
   margin-right: 20px;
   margin-bottom: 30px;
@@ -9,7 +9,7 @@ export const Container = styled.View`
 `;
 
 export const StyledImage = styled.Image`
-  width: 290px;
+  flex: 1;
   height: 110px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;

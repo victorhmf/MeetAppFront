@@ -43,7 +43,7 @@ const headerOptions = title => ({
   title,
   headerTintColor: theme.colors.white,
   headerStyle: { backgroundColor: theme.colors.primary },
-  headerTitleStyle: { fontSize: 18 },
+  headerTitleStyle: { fontSize: 18, flex: 1 },
   headerRight: <ProfileButton />,
 });
 

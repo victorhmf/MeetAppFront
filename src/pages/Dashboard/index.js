@@ -32,7 +32,7 @@ class Dashboard extends Component {
     getMeetupsRequest();
   };
 
-  renderListItem = ({ item }) => <MeetupItem item={item} />;
+  renderListItem = ({ item }) => <MeetupItem width="290px" item={item} />;
 
   render() {
     const { meetups, error, loading } = this.props;

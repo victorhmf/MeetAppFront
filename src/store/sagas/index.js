@@ -2,7 +2,7 @@ import { all, takeLatest } from 'redux-saga/effects';
 import { createUser, updateUser } from '~/store/sagas/user';
 import { login } from '~/store/sagas/login';
 import {
-  createMeetup, getMeetups, showMeetup, subscribeMeetup,
+  createMeetup, getMeetups, showMeetup, subscribeMeetup, searchMeetup
 } from '~/store/sagas/meetup';
 import { UserTypes } from '~/store/ducks/user';
 import { LoginTypes } from '~/store/ducks/login';
@@ -18,5 +18,6 @@ export default function* rootSaga() {
     takeLatest(MeetupTypes.GET_MEETUPS_REQUEST, getMeetups),
     takeLatest(MeetupTypes.SHOW_MEETUP_REQUEST, showMeetup),
     takeLatest(MeetupTypes.SUBSCRIBE_MEETUP_REQUEST, subscribeMeetup),
+    takeLatest(MeetupTypes.SEARCH_MEETUP_REQUEST, searchMeetup),
   ]);
 }

@@ -13,8 +13,8 @@ import {
   NavigateButton,
 } from './styles';
 
-const MeetupItem = ({ item, navigation }) => (
-  <Container>
+const MeetupItem = ({ item, navigation, width }) => (
+  <Container width={width}>
     <StyledImage source={{ uri: item.file.url }} />
     <InfoContainer>
       <InfoContent>

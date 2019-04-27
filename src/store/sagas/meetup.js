@@ -87,3 +87,17 @@ export function* subscribeMeetup({ id }) {
     yield put(MeetupActions.subscribeMeetupFailure(error.response.data));
   }
 }
+
+export function* searchMeetup({ title }) {
+  try {
+    const { data } = yield call(api.get, `/search/meetups/?title=${title}`);
+
+    yield put(MeetupActions.searchMeetupSuccess(data));
+  } catch (error) {
+    yield put(
+      MeetupActions.searchMeetupFailure({
+        error: { message: 'Nenhum meetup encontrado' },
+      }),
+    );
+  }
+}

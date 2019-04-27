@@ -14,7 +14,7 @@ import NewMeetup from '~/pages/NewMeetup';
 import Profile from '~/pages/Profile';
 import Search from '~/pages/Search';
 import { theme } from '~/theme';
-import ProfileButton from '~/components/ProfileButton';
+import HeaderNavigation from '~/components/HeaderNavigation';
 import React from 'react';
 
 const AuthNavigator = createSwitchNavigator({ Signin, Signup });
@@ -44,7 +44,7 @@ const headerOptions = title => ({
   headerTintColor: theme.colors.white,
   headerStyle: { backgroundColor: theme.colors.primary },
   headerTitleStyle: { fontSize: 18, flex: 1 },
-  headerRight: <ProfileButton />,
+  headerRight: <HeaderNavigation />,
 });
 
 const AppNavigator = createStackNavigator(

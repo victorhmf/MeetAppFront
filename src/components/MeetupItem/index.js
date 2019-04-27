@@ -21,7 +21,11 @@ const MeetupItem = ({ item, navigation, width }) => (
         <Title numberOfLines={1} ellipsizeMode="tail">
           {item.title}
         </Title>
-        <SubTitle>{item.__meta__.members} membros</SubTitle>
+        <SubTitle>
+          {item.__meta__.members === '1'
+            ? `${item.__meta__.members} membro`
+            : `${item.__meta__.members} membros`}
+        </SubTitle>
       </InfoContent>
       <NavigateButton onPress={() => navigation.navigate('Meetup', { meetupId: item.id })}>
         <Icon name="angle-right" size={20} color="white" />

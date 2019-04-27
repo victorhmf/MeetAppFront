@@ -197,7 +197,7 @@ class NewMeetup extends Component {
           />
           {errors && errors.map(
             error => error.field === 'file' && (
-            <Error key={error.validation}>Por favor, insira uma imagem válida</Error>
+            <Error key={error.validation}>Por favor, insira uma imagem válida.</Error>
             ),
           )}
           <Label withMargin>Imagem</Label>
@@ -243,8 +243,8 @@ class NewMeetup extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.meetup.loading,
-  errors: state.meetup.errors,
+  loading: state.meetup.newMeetup.loading,
+  errors: state.meetup.newMeetup.errors,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(MeetupActions, dispatch);

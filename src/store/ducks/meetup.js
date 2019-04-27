@@ -7,7 +7,7 @@ import Immutable from 'seamless-immutable';
 export const { Types, Creators } = createActions({
   createMeetupRequest: ['file', 'meetup'],
   createMeetupSuccess: ['meetup'],
-  createMeetupFailure: ['error'],
+  createMeetupFailure: ['errors'],
   getMeetupsRequest: [null],
   getMeetupsSuccess: ['meetups'],
   getMeetupsFailure: ['error'],
@@ -31,7 +31,7 @@ export const MeetupActions = Creators;
 */
 
 const INITIAL_STATE = Immutable({
-  newMeetup: { meetup: null, error: null, loading: false },
+  newMeetup: { meetup: null, errors: null, loading: false },
   meetupList: { meetups: null, error: null, loading: false },
   activeMeetup: { meetup: null, error: null, loading: false },
   subscribedMeetup: { error: null, loading: false },
@@ -43,8 +43,8 @@ const INITIAL_STATE = Immutable({
 */
 
 const createMeetupRequest = state => state.merge({ newMeetup: { loading: true } });
-const createMeetupSuccess = (state, { meetup }) => state.merge({ newMeetup: { meetup, loading: false, error: null } });
-const createMeetupFailure = (state, { error }) => state.merge({ newMeetup: { error, loading: false } });
+const createMeetupSuccess = (state, { meetup }) => state.merge({ newMeetup: { meetup, loading: false, errors: null } });
+const createMeetupFailure = (state, { errors }) => state.merge({ newMeetup: { errors, loading: false } });
 
 const getMeetupsRequest = state => state.merge({ meetupList: { loading: true } });
 const getMeetupsSuccess = (state, { meetups }) => state.merge({ meetupList: { meetups, loading: false, error: null } });
@@ -64,7 +64,7 @@ const subscribeMeetupFailure = (state, { error }) => state.merge({ subscribedMee
 const searchMeetupRequest = state => state.merge({ searchedMeetup: { loading: true } });
 const searchMeetupSuccess = (state, { meetups }) => state.merge({ searchedMeetup: { meetups, loading: false, error: null } });
 const searchMeetupFailure = (state, { error }) => state.merge({ searchedMeetup: { error, loading: false } });
-const searchMeetupReset = (state) => state.merge({ searchedMeetup: { meetups: null, error: null, loading: false } });
+const searchMeetupReset = state => state.merge({ searchedMeetup: { meetups: null, error: null, loading: false } });
 
 export const meetup = createReducer(INITIAL_STATE, {
   [Types.CREATE_MEETUP_REQUEST]: createMeetupRequest,

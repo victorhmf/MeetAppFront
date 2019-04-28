@@ -40,6 +40,7 @@ export const ButtonText = styled.Text`
 export const Error = styled.Text`
   font-size: ${props => props.theme.fontSize.small};
   color: ${props => props.theme.colors.danger};
+  margin-bottom: 5px;
 `;
 
 export const ImageButton = styled.TouchableOpacity`

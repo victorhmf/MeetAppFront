@@ -30,6 +30,7 @@ class NewMeetup extends Component {
       navigate: PropTypes.func,
     }).isRequired,
     createMeetupRequest: PropTypes.func.isRequired,
+    createMeetupReset: PropTypes.func.isRequired,
     errors: PropTypes.arrayOf(
       PropTypes.shape({
         message: PropTypes.string,
@@ -89,11 +90,12 @@ class NewMeetup extends Component {
   };
 
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, createMeetupReset } = this.props;
     const initialState = this.state;
 
     this.navListener = navigation.addListener('didFocus', () => {
       this.setState(initialState);
+      createMeetupReset();
     });
   }
 

@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce';
 import Immutable from 'seamless-immutable';
+import { statement } from '@babel/template';
 /*
   Actions Types and Creators
 */
@@ -8,6 +9,7 @@ export const { Types, Creators } = createActions({
   createMeetupRequest: ['file', 'meetup'],
   createMeetupSuccess: ['meetup'],
   createMeetupFailure: ['errors'],
+  createMeetupReset: [null],
   getMeetupsRequest: [null],
   getMeetupsSuccess: ['meetups'],
   getMeetupsFailure: ['error'],
@@ -45,6 +47,7 @@ const INITIAL_STATE = Immutable({
 const createMeetupRequest = state => state.merge({ newMeetup: { loading: true } });
 const createMeetupSuccess = (state, { meetup }) => state.merge({ newMeetup: { meetup, loading: false, errors: null } });
 const createMeetupFailure = (state, { errors }) => state.merge({ newMeetup: { errors, loading: false } });
+const createMeetupReset = state => state.merge({ newMeetup: { meetup: null, errors: null, loading: false } });
 
 const getMeetupsRequest = state => state.merge({ meetupList: { loading: true } });
 const getMeetupsSuccess = (state, { meetups }) => state.merge({ meetupList: { meetups, loading: false, error: null } });
@@ -64,12 +67,13 @@ const subscribeMeetupFailure = (state, { error }) => state.merge({ subscribedMee
 const searchMeetupRequest = state => state.merge({ searchedMeetup: { loading: true } });
 const searchMeetupSuccess = (state, { meetups }) => state.merge({ searchedMeetup: { meetups, loading: false, error: null } });
 const searchMeetupFailure = (state, { error }) => state.merge({ searchedMeetup: { error, loading: false } });
-const searchMeetupReset = state => state.merge({ searchedMeetup: { meetups: null, error: null, loading: false } });
+const searchMeetupReset = state => state.merge({ searchedMeetup: { ...state.searchedMeetup, error: null, loading: false } });
 
 export const meetup = createReducer(INITIAL_STATE, {
   [Types.CREATE_MEETUP_REQUEST]: createMeetupRequest,
   [Types.CREATE_MEETUP_SUCCESS]: createMeetupSuccess,
   [Types.CREATE_MEETUP_FAILURE]: createMeetupFailure,
+  [Types.CREATE_MEETUP_RESET]: createMeetupReset,
   [Types.GET_MEETUPS_REQUEST]: getMeetupsRequest,
   [Types.GET_MEETUPS_SUCCESS]: getMeetupsSuccess,
   [Types.GET_MEETUPS_FAILURE]: getMeetupsFailure,

@@ -19,10 +19,12 @@ class Profile extends Component {
       navigate: PropTypes.func,
     }).isRequired,
     username: PropTypes.string.isRequired,
-    preferences: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      title: PropTypes.string,
-    })).isRequired,
+    preferences: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+      }),
+    ).isRequired,
     updateUserRequest: PropTypes.func.isRequired,
     userReset: PropTypes.func.isRequired,
     errors: PropTypes.arrayOf(
@@ -154,7 +156,8 @@ class Profile extends Component {
             onChangeText={text => this.setState({ username: text })}
           />
           {errors.map(
-            error => error.validation === 'min' && <Error key={error.validation}>{error.message}</Error>,
+            error => error.field === 'password'
+              && error.validation === 'min' && <Error key={error.field}>{error.message}</Error>,
           )}
           <Label>Senha</Label>
           <Input

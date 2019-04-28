@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { UserActions } from '~/store/ducks/user';
 
+import PropTypes from 'prop-types';
 import {
   Container,
   LogoContainer,
@@ -18,7 +19,6 @@ import {
   Error,
 } from '../Signin/styles';
 
-import PropTypes from 'prop-types';
 
 class Signup extends Component {
   static propTypes = {
@@ -41,6 +41,11 @@ class Signup extends Component {
     email: '',
     password: '',
   };
+
+  componentDidMount() {
+    const { userReset } = this.props;
+    userReset();
+  }
 
   handleSubmit = async () => {
     const { username, email, password } = this.state;

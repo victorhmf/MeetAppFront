@@ -52,6 +52,8 @@ class Profile extends Component {
   };
 
   componentDidMount() {
+    const { userReset } = this.props;
+    userReset();
     this.setPreferences();
   }
 
@@ -158,7 +160,9 @@ class Profile extends Component {
             onChangeText={text => this.setState({ passwordConfirmation: text })}
           />
           {errors.map(
-            error => error.field === 'preferences' && <Error key={error.validation}>{error.message}</Error>,
+            error => error.field === 'preferences' && (
+            <Error key={error.validation}>{error.message}</Error>
+            ),
           )}
           <Label withMargin>Preferências</Label>
           <MultipleCheckBox checkboxes={checkboxes} handleCheckBox={this.handleCheckBox} />

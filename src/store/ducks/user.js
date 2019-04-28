@@ -12,6 +12,7 @@ const { Types, Creators } = createActions({
   updateUserRequest: ['data'],
   updateUserSuccess: ['user'],
   updateUserFailure: ['errors'],
+  userReset: [null],
 });
 
 export const UserTypes = Types;
@@ -22,7 +23,7 @@ export const UserActions = Creators;
 */
 
 const INITIAL_STATE = Immutable({
-  user: [],
+  user: null,
   loading: false,
   errors: [],
 });
@@ -34,6 +35,7 @@ const INITIAL_STATE = Immutable({
 const userRequest = state => state.merge({ loading: true });
 const userSuccess = (state, { user }) => state.merge({ loading: false, user, errors: [] });
 const userFailure = (state, { errors }) => state.merge({ loading: false, errors });
+const userReset = state => state.merge({ user: null, loading: false, errors: [] });
 
 export const user = createReducer(INITIAL_STATE, {
   [Types.CREATE_USER_REQUEST]: userRequest,
@@ -42,4 +44,5 @@ export const user = createReducer(INITIAL_STATE, {
   [Types.UPDATE_USER_SUCCESS]: userSuccess,
   [Types.CREATE_USER_FAILURE]: userFailure,
   [Types.UPDATE_USER_FAILURE]: userFailure,
+  [Types.USER_RESET]: userReset,
 });

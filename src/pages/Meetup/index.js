@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-raw-text */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,6 +7,7 @@ import { MeetupActions } from '~/store/ducks/meetup';
 import moment from 'moment';
 
 import { ScrollView, ActivityIndicator } from 'react-native';
+import PropTypes from 'prop-types';
 
 import {
   Container,
@@ -21,13 +22,51 @@ import {
 } from './styles';
 
 class Meetup extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+      state: PropTypes.shape({
+        params: PropTypes.shape({
+          id: PropTypes.number,
+        }),
+      }),
+    }).isRequired,
+    meetup: PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      location: PropTypes.string,
+      date: PropTypes.string,
+      user_id: PropTypes.number,
+      file_id: PropTypes.number,
+    }),
+    subscribeMeetupRequest: PropTypes.func.isRequired,
+    showMeetupRequest: PropTypes.func.isRequired,
+    subscribeMeetupLoading: PropTypes.bool.isRequired,
+    showMeetupError: PropTypes.shape({
+      error: PropTypes.shape({
+        message: PropTypes.string,
+      }),
+    }),
+    subscribeMeetupError: PropTypes.shape({
+      error: PropTypes.shape({
+        message: PropTypes.string,
+      }),
+    }),
+  };
+
+  static defaultProps = {
+    showMeetupError: null,
+    subscribeMeetupError: null,
+    meetup: null,
+  }
+
   static navigationOptions = ({ navigation }) => ({ headerTitle: navigation.state.params.title })
   
 
   componentDidMount() {
     const { id } = this.props.navigation.state.params;
     const { showMeetupRequest } = this.props;
-
     showMeetupRequest(id);
   }
 

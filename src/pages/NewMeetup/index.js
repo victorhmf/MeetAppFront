@@ -9,6 +9,7 @@ import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { MeetupActions } from '~/store/ducks/meetup';
+import PropTypes from 'prop-types';
 
 import {
   Container,
@@ -24,6 +25,25 @@ import {
 import MultipleCheckBox from '~/components/MultipleCheckBox';
 
 class NewMeetup extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+    createMeetupRequest: PropTypes.func.isRequired,
+    errors: PropTypes.arrayOf(
+      PropTypes.shape({
+        message: PropTypes.string,
+        field: PropTypes.string,
+        validation: PropTypes.string,
+      }),
+    ),
+    loading: PropTypes.bool.isRequired,
+  };
+
+  static defaultProps = {
+    errors: null,
+  }
+
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) => <Icon name="plus-square" size={20} color={tintColor} />,
   };

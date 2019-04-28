@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation';
 
 import AsyncStorage from '@react-native-community/async-storage';
+import PropTypes from 'prop-types';
 import { Container, Button } from './styles';
 
 const HeaderNavigation = ({ navigation }) => {
@@ -26,6 +27,12 @@ const HeaderNavigation = ({ navigation }) => {
       </Button>
     </Container>
   );
+};
+
+HeaderNavigation.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
 };
 
 export default withNavigation(HeaderNavigation);

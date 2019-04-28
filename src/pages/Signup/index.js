@@ -19,13 +19,13 @@ import {
   Error,
 } from '../Signin/styles';
 
-
 class Signup extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
     }).isRequired,
     createUserRequest: PropTypes.func.isRequired,
+    userReset: PropTypes.func.isRequired,
     errors: PropTypes.arrayOf(
       PropTypes.shape({
         message: PropTypes.string,

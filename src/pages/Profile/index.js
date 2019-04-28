@@ -7,12 +7,34 @@ import { UserActions } from '~/store/ducks/user';
 
 import MultipleCheckBox from '~/components/MultipleCheckBox';
 import { ScrollView, ActivityIndicator } from 'react-native';
+import PropTypes from 'prop-types';
 
 import {
   Container, Label, Input, Button, ButtonText, Error,
 } from './styles';
 
 class Profile extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+    username: PropTypes.string.isRequired,
+    preferences: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+    })).isRequired,
+    updateUserRequest: PropTypes.func.isRequired,
+    userReset: PropTypes.func.isRequired,
+    errors: PropTypes.arrayOf(
+      PropTypes.shape({
+        message: PropTypes.string,
+        field: PropTypes.string,
+        validation: PropTypes.string,
+      }),
+    ).isRequired,
+    loading: PropTypes.bool.isRequired,
+  };
+
   state = {
     username: '' || this.props.username,
     password: '',

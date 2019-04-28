@@ -6,12 +6,24 @@ import { bindActionCreators } from 'redux';
 import { UserActions } from '~/store/ducks/user';
 import MultipleCheckBox from '~/components/MultipleCheckBox';
 import { ActivityIndicator } from 'react-native';
+import PropTypes from 'prop-types';
 
 import {
   Container, Title, Paragraph, Button, ButtonText, SubTitle,
 } from './styles';
 
 class Preferences extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+    user: PropTypes.shape({
+      username: PropTypes.string,
+    }).isRequired,
+    updateUserRequest: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+  };
+
   static navigationOptions = { header: null };
 
   state = {
@@ -51,7 +63,7 @@ class Preferences extends Component {
 
   handleSubmit = async () => {
     const { checkboxes } = this.state;
-    const { user, updateUserRequest } = this.props;
+    const { updateUserRequest } = this.props;
 
     const preferences = checkboxes
       .filter(preference => preference.checked)

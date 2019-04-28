@@ -5,12 +5,29 @@ import { ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { LoginActions } from '~/store/ducks/login';
+import PropTypes from 'prop-types';
 
 import {
   Container, LogoContainer, Logo, Label, Input, Button, ButtonText, Error,
 } from './styles';
 
 class Signin extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+    loginRequest: PropTypes.func.isRequired,
+    loginReset: PropTypes.func.isRequired,
+    errors: PropTypes.arrayOf(
+      PropTypes.shape({
+        message: PropTypes.string,
+        field: PropTypes.string,
+        validation: PropTypes.string,
+      }),
+    ).isRequired,
+    loading: PropTypes.bool.isRequired,
+  };
+
   state = {
     email: '',
     password: '',

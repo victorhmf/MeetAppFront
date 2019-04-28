@@ -2,6 +2,7 @@ import React from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation';
+import PropTypes from 'prop-types';
 
 import {
   Container,
@@ -35,5 +36,22 @@ const MeetupItem = ({ item, navigation, width }) => (
     </InfoContainer>
   </Container>
 );
+
+MeetupItem.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+  item: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    __meta__: PropTypes.shape({
+      members: PropTypes.string,
+    }),
+    file: PropTypes.shape({
+      url: PropTypes.string,
+    }),
+  }).isRequired,
+  width: PropTypes.string.isRequired,
+};
 
 export default withNavigation(MeetupItem);

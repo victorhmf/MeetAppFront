@@ -12,12 +12,48 @@ import {
 import MeetupItem from '~/components/MeetupItem';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PropTypes from 'prop-types';
 
 import {
   Container, Label, Message, Error,
 } from './styles';
 
 class Dashboard extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+    meetups: PropTypes.shape({
+      recommended: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        file_id: PropTypes.number,
+      })),
+      subscribed: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        file_id: PropTypes.number,
+      })),
+      notSubscribed: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        file_id: PropTypes.number,
+      })),
+    }),
+    getMeetupsRequest: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.shape({
+      error: PropTypes.shape({
+        message: PropTypes.string,
+      }),
+    }),
+  };
+
+  static defaultProps = {
+    error: null,
+    meetups: null,
+  }
+
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) => <Icon name="home" size={24} color={tintColor} />,
   };
